@@ -1,12 +1,12 @@
 'use server';
-import { generateBgmiConfig, GenerateBgmiConfigInput, GenerateBgmiConfigOutput } from '@/ai/flows/generate-bgmi-config';
+import { generateGameConfig, GenerateGameConfigInput, GenerateGameConfigOutput } from '@/ai/flows/generate-game-config';
 
-export async function createConfig(input: GenerateBgmiConfigInput): Promise<GenerateBgmiConfigOutput> {
+export async function createConfig(input: GenerateGameConfigInput): Promise<GenerateGameConfigOutput> {
   try {
-    const result = await generateBgmiConfig(input);
+    const result = await generateGameConfig(input);
     return result;
   } catch (error) {
-    console.error("Error generating BGMI config:", error);
+    console.error("Error generating game config:", error);
     throw new Error("Failed to generate configuration. Please try again.");
   }
 }

@@ -1,4 +1,4 @@
 import { config } from 'dotenv';
 config();
 
-import '@/ai/flows/generate-bgmi-config.ts';
+import '@/ai/flows/generate-game-config.ts';

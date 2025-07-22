@@ -11,9 +11,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import { createConfig } from '@/app/actions';
-import type { GenerateBgmiConfigOutput } from '@/ai/flows/generate-bgmi-config';
+import type { GenerateGameConfigOutput } from '@/ai/flows/generate-game-config';
 import { VideoInterstitial } from '@/components/video-interstitial';
 
 const features = [
@@ -29,6 +30,9 @@ const features = [
 ] as const;
 
 const formSchema = z.object({
+  game: z.enum(['BGMI', 'PUBG'], {
+    required_error: 'You need to select a game.',
+  }),
   deviceSpecifications: z.string().min(10, { message: 'Please provide more details about your device.' }),
   gameSettingsPreferences: z.string().min(10, { message: 'Please describe your preferred settings.' }),
   desiredFeatures: z.array(z.string()).refine((value) => value.length > 0, {
@@ -40,14 +44,15 @@ type FormValues = z.infer<typeof formSchema>;
 
 export function ConfigGenerator() {
   const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState<GenerateBgmiConfigOutput | null>(null);
-  const [generatedData, setGeneratedData] = useState<GenerateBgmiConfigOutput | null>(null);
+  const [result, setResult] = useState<GenerateGameConfigOutput | null>(null);
+  const [generatedData, setGeneratedData] = useState<GenerateGameConfigOutput | null>(null);
   const [showInterstitial, setShowInterstitial] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      game: 'BGMI',
       deviceSpecifications: '',
       gameSettingsPreferences: '',
       desiredFeatures: ['Aim Assist'],
@@ -93,7 +98,7 @@ export function ConfigGenerator() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'bgmi_config_pro.ini';
+    a.download = 'config_pro.ini';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -116,13 +121,48 @@ export function ConfigGenerator() {
         <CardHeader>
           <CardTitle className="font-headline text-3xl">Customize Your Config</CardTitle>
           <CardDescription>
-            Fill out the details below and our AI will generate the perfect BGMI config for you.
+            Fill out the details below and our AI will generate the perfect config for you.
           </CardDescription>
         </CardHeader>
         <CardContent>
           {!result && (
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <FormField
+                  control={form.control}
+                  name="game"
+                  render={({ field }) => (
+                    <FormItem className="space-y-3">
+                      <FormLabel className="text-lg">Select Game</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4"
+                        >
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="BGMI" />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              BGMI
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="PUBG" />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              PUBG
+                            </FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <div className="grid md:grid-cols-2 gap-8">
                   <FormField
                     control={form.control}

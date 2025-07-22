@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'BGMI Config Pro',
-  description: 'Generate optimized BGMI config files with AI.',
+  title: 'BGMI/PUBG Config Pro',
+  description: 'Generate optimized BGMI/PUBG config files with AI.',
 };
 
 export default function RootLayout({

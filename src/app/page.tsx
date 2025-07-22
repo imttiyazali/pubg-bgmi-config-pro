@@ -13,7 +13,7 @@ export default function Home() {
           <Gamepad2 size={64} />
         </div>
         <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-primary">
-          BGMI Config Pro
+          BGMI/PUBG Config Pro
         </h1>
         <p className="mt-4 text-lg text-muted-foreground max-w-2xl">
           Unleash peak performance. Generate your ultimate BGMI/PUBG configuration with the power of AI and dominate the battlegrounds.

@@ -33,7 +33,7 @@ export type GenerateGameConfigInput = z.infer<typeof GenerateGameConfigInputSche
 const GenerateGameConfigOutputSchema = z.object({
   configurationFileContent: z
     .string()
-    .describe('The content of the generated configuration file.'),
+    .describe('The content of the generated BGMI configuration file.'),
   installationInstructions: z
     .string()
     .describe('Instructions on how to install the generated configuration file.'),
