@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Shield, BarChart, Users, FileText, MoreHorizontal, PlusCircle, Link, Star } from 'lucide-react';
+import { Shield, BarChart, Users, FileText, MoreHorizontal, PlusCircle, Link, Star, UserPlus, Gift } from 'lucide-react';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Bar, XAxis, YAxis, CartesianGrid, BarChart as RechartsBarChart } from 'recharts';
 
@@ -51,7 +51,7 @@ export function AdminDashboard() {
           Welcome to the control center. Here's what's happening with your app.
         </p>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -77,6 +77,18 @@ export function AdminDashboard() {
             <div className="text-2xl font-bold">+573</div>
             <p className="text-xs text-muted-foreground">
               +201 since last hour
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Referrals</CardTitle>
+            <Gift className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">+1,250</div>
+            <p className="text-xs text-muted-foreground">
+              +19% from last month
             </p>
           </CardContent>
         </Card>
@@ -134,6 +146,17 @@ export function AdminDashboard() {
                     </Button>
                 </CardContent>
             </Card>
+             <Card>
+                <CardHeader>
+                  <CardTitle>Invite a Friend</CardTitle>
+                  <CardDescription>Generate a referral link to share.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button className="w-full">
+                    <UserPlus className="mr-2 h-4 w-4" /> Generate Link
+                  </Button>
+                </CardContent>
+              </Card>
             <Card>
                 <CardHeader>
                     <CardTitle>Social Media</CardTitle>
