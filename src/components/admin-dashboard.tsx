@@ -262,7 +262,7 @@ export function AdminDashboard() {
                             <TableCell className="font-medium">{user.id}</TableCell>
                             <TableCell>{user.deviceId}</TableCell>
                             <TableCell>
-                                <Badge variant={user.status === 'Active' ? 'default' : 'destructive'} className="bg-green-600/20 text-green-400 border-green-400/20 hover:bg-green-600/30">
+                                <Badge variant={user.status === 'Active' ? 'default' : 'destructive'}>
                                     {user.status}
                                 </Badge>
                             </TableCell>
