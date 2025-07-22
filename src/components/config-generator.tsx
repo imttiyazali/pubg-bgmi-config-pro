@@ -29,6 +29,7 @@ const features = [
   { id: 'aim_stable', label: 'Aim Stable' },
   { id: 'white_body', label: 'White Body' },
   { id: 'red_body', label: 'Red Body' },
+  { id: 'wide_view_iphone_8_plus', label: 'Wide View (iPhone 8 Plus)' },
 ] as const;
 
 const formSchema = z.object({
