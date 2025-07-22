@@ -27,6 +27,8 @@ const features = [
   { id: 'auto_aim', label: 'Auto Aim' },
   { id: 'future_aim_assist_bot', label: 'Future Aim Assist Bot' },
   { id: 'aim_stable', label: 'Aim Stable' },
+  { id: 'white_body', label: 'White Body' },
+  { id: 'red_body', label: 'Red Body' },
 ] as const;
 
 const formSchema = z.object({
