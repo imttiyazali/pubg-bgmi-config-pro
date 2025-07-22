@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Shield, BarChart, Users, FileText, MoreHorizontal, PlusCircle, Link, Star, UserPlus, Gift } from 'lucide-react';
+import { Shield, BarChart, Users, FileText, MoreHorizontal, PlusCircle, Link, Star, UserPlus, Gift, ShieldAlert, Zap } from 'lucide-react';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Bar, XAxis, YAxis, CartesianGrid, BarChart as RechartsBarChart } from 'recharts';
+import { useToast } from '@/hooks/use-toast';
 
 
 const chartData = [
@@ -34,7 +35,23 @@ const usersData = [
     { id: 'USR005', deviceId: 'DEV-Q7R8S9T0', status: 'Active', configs: 1, isVip: false },
 ]
 
+const issuesData = [
+    { id: 'ERR001', description: 'Failed to generate config for user USR003.', timestamp: '2024-07-30 10:45:12', severity: 'High' },
+    { id: 'ERR002', description: 'API rate limit exceeded for Gemini.', timestamp: '2024-07-30 09:12:54', severity: 'Medium' },
+    { id: 'ERR003', description: 'UI render error on /login page.', timestamp: '2024-07-29 18:30:00', severity: 'Low' },
+];
+
 export function AdminDashboard() {
+  const { toast } = useToast();
+  
+  const handleFixIssue = (issueId: string) => {
+    toast({
+      title: `Attempting to fix issue ${issueId}`,
+      description: 'Automated resolution in progress...',
+    });
+    // Placeholder for actual fix logic
+  };
+
   return (
     <div className="w-full max-w-7xl mx-auto space-y-8">
        <div className="w-full flex flex-col items-center text-center mb-12">
@@ -170,6 +187,52 @@ export function AdminDashboard() {
             </Card>
         </div>
       </div>
+      
+      <Card>
+        <CardHeader>
+          <div className="flex flex-row items-center space-x-2">
+            <ShieldAlert className="h-6 w-6 text-destructive" />
+            <div>
+              <CardTitle>System Health</CardTitle>
+              <CardDescription>View and manage critical application issues.</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Error ID</TableHead>
+                <TableHead>Description</TableHead>
+                <TableHead>Timestamp</TableHead>
+                <TableHead>Severity</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {issuesData.map((issue) => (
+                <TableRow key={issue.id}>
+                  <TableCell className="font-medium">{issue.id}</TableCell>
+                  <TableCell>{issue.description}</TableCell>
+                  <TableCell>{issue.timestamp}</TableCell>
+                  <TableCell>
+                    <Badge variant={issue.severity === 'High' ? 'destructive' : 'default'}>
+                      {issue.severity}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button variant="outline" size="sm" onClick={() => handleFixIssue(issue.id)}>
+                      <Zap className="mr-2 h-4 w-4" />
+                      Auto-Fix
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
@@ -234,3 +297,5 @@ export function AdminDashboard() {
     </div>
   );
 }
+
+    
