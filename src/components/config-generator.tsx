@@ -25,6 +25,7 @@ const features = [
   { id: 'bullet_tracker', label: 'Bullet Tracker' },
   { id: 'auto_aim', label: 'Auto Aim' },
   { id: 'future_aim_assist_bot', label: 'Future Aim Assist Bot' },
+  { id: 'aim_stable', label: 'Aim Stable' },
 ] as const;
 
 const formSchema = z.object({
