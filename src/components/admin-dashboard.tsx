@@ -1,8 +1,12 @@
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Shield, BarChart, Users, FileText } from 'lucide-react';
-import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@/components/ui/chart';
+import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Shield, BarChart, Users, FileText, MoreHorizontal, PlusCircle, Link, Star } from 'lucide-react';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Bar, XAxis, YAxis, CartesianGrid, BarChart as RechartsBarChart } from 'recharts';
 
 
@@ -22,11 +26,18 @@ const chartConfig = {
   },
 };
 
+const usersData = [
+    { id: 'USR001', deviceId: 'DEV-A1B2C3D4', status: 'Active', configs: 5, isVip: true },
+    { id: 'USR002', deviceId: 'DEV-E5F6G7H8', status: 'Active', configs: 2, isVip: false },
+    { id: 'USR003', deviceId: 'DEV-I9J0K1L2', status: 'Banned', configs: 12, isVip: false },
+    { id: 'USR004', deviceId: 'DEV-M3N4O5P6', status: 'Active', configs: 8, isVip: true },
+    { id: 'USR005', deviceId: 'DEV-Q7R8S9T0', status: 'Active', configs: 1, isVip: false },
+]
 
 export function AdminDashboard() {
   return (
-    <div className="w-full max-w-6xl">
-       <div className="w-full max-w-4xl flex flex-col items-center text-center mb-12">
+    <div className="w-full max-w-7xl mx-auto space-y-8">
+       <div className="w-full flex flex-col items-center text-center mb-12">
         <div 
           className="mb-4 text-primary"
           style={{ filter: `drop-shadow(0 0 8px hsl(var(--primary)))` }}
@@ -40,7 +51,7 @@ export function AdminDashboard() {
           Welcome to the control center. Here's what's happening with your app.
         </p>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-8">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -84,31 +95,119 @@ export function AdminDashboard() {
           </CardContent>
         </Card>
       </div>
+      
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <Card className="lg:col-span-2">
+            <CardHeader>
+                <CardTitle>Feature Usage Statistics</CardTitle>
+                <CardDescription>A breakdown of the most popular features selected by users.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <ChartContainer config={chartConfig} className="h-[300px] w-full">
+                    <RechartsBarChart data={chartData} accessibilityLayer>
+                        <CartesianGrid vertical={false} />
+                        <XAxis
+                            dataKey="feature"
+                            tickLine={false}
+                            tickMargin={10}
+                            axisLine={false}
+                        />
+                        <YAxis />
+                        <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent hideLabel />}
+                        />
+                        <Bar dataKey="count" fill="var(--color-count)" radius={4} />
+                    </RechartsBarChart>
+                </ChartContainer>
+            </CardContent>
+        </Card>
+        <div className="space-y-8">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Sponsorship</CardTitle>
+                    <CardDescription>Manage sponsorship content.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Button className="w-full">
+                        <PlusCircle className="mr-2 h-4 w-4" /> Add New Sponsor
+                    </Button>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Social Media</CardTitle>
+                    <CardDescription>Manage social media links.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                     <Button className="w-full">
+                        <Link className="mr-2 h-4 w-4" /> Update Links
+                    </Button>
+                </CardContent>
+            </Card>
+        </div>
+      </div>
+
       <Card>
-        <CardHeader>
-          <CardTitle>Feature Usage Statistics</CardTitle>
-          <CardDescription>A breakdown of the most popular features selected by users.</CardDescription>
+        <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+                <CardTitle>User Management</CardTitle>
+                <CardDescription>View and manage all registered users.</CardDescription>
+            </div>
+            <Button>
+                <PlusCircle className="mr-2 h-4 w-4" /> Add User
+            </Button>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={chartConfig} className="h-[300px] w-full">
-            <RechartsBarChart data={chartData} accessibilityLayer>
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="feature"
-                tickLine={false}
-                tickMargin={10}
-                axisLine={false}
-              />
-              <YAxis />
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
-              />
-              <Bar dataKey="count" fill="var(--color-count)" radius={4} />
-            </RechartsBarChart>
-          </ChartContainer>
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>User ID</TableHead>
+                        <TableHead>Device ID</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Configs</TableHead>
+                        <TableHead>VIP</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {usersData.map((user) => (
+                        <TableRow key={user.id}>
+                            <TableCell className="font-medium">{user.id}</TableCell>
+                            <TableCell>{user.deviceId}</TableCell>
+                            <TableCell>
+                                <Badge variant={user.status === 'Active' ? 'default' : 'destructive'} className="bg-green-600/20 text-green-400 border-green-400/20 hover:bg-green-600/30">
+                                    {user.status}
+                                </Badge>
+                            </TableCell>
+                            <TableCell>{user.configs}</TableCell>
+                            <TableCell>
+                                {user.isVip && <Star className="h-5 w-5 text-yellow-400" />}
+                            </TableCell>
+                            <TableCell className="text-right">
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="h-8 w-8 p-0">
+                                            <span className="sr-only">Open menu</span>
+                                            <MoreHorizontal className="h-4 w-4" />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuItem>Edit User</DropdownMenuItem>
+                                        <DropdownMenuItem>{user.isVip ? 'Revoke VIP' : 'Grant VIP'}</DropdownMenuItem>
+                                        <DropdownMenuItem className="text-destructive focus:bg-destructive/10 focus:text-destructive">
+                                            {user.status === 'Banned' ? 'Unblock User' : 'Block User'}
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
         </CardContent>
       </Card>
+
     </div>
   );
 }
