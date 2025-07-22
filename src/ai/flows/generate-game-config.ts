@@ -15,7 +15,7 @@ const GenerateGameConfigInputSchema = z.object({
   game: z.enum(['BGMI', 'PUBG']).describe('The game to generate the config for.'),
   deviceSpecifications: z
     .string()
-    .describe('The device specifications, including CPU, GPU, and RAM.'),
+    .describe('The device RAM.'),
   gameSettingsPreferences: z
     .string()
     .describe(

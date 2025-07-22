@@ -38,11 +38,18 @@ const gameSettingsOptions = [
     { id: 'high_quality', label: 'High Quality', description: 'HDR Graphics, Extreme FPS' },
 ]
 
+const ramOptions = [
+    { id: '4gb', label: '4GB RAM' },
+    { id: '6gb', label: '6GB RAM' },
+    { id: '8gb', label: '8GB RAM' },
+    { id: '12gb', label: '12GB+ RAM' },
+]
+
 const formSchema = z.object({
   game: z.enum(['BGMI', 'PUBG'], {
     required_error: 'You need to select a game.',
   }),
-  deviceSpecifications: z.string().min(10, { message: 'Please provide more details about your device.' }),
+  deviceSpecifications: z.string({ required_error: 'You need to select your device RAM.'}),
   gameSettingsPreferences: z.string({ required_error: 'You need to select a game setting preference.'}),
   desiredFeatures: z.array(z.string()).refine((value) => value.length > 0, {
     message: 'You have to select at least one feature.',
@@ -62,7 +69,6 @@ export function ConfigGenerator() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       game: 'BGMI',
-      deviceSpecifications: '',
       desiredFeatures: ['Aim Assist'],
     },
   });
@@ -176,14 +182,26 @@ export function ConfigGenerator() {
                     control={form.control}
                     name="deviceSpecifications"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-lg">Device Specifications</FormLabel>
+                      <FormItem className="space-y-3">
+                        <FormLabel className="text-lg">Device RAM</FormLabel>
                         <FormControl>
-                          <Textarea
-                            placeholder="e.g., iPhone 15 Pro, Snapdragon 8 Gen 2, 8GB RAM"
-                            className="resize-none h-32"
-                            {...field}
-                          />
+                           <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            className="flex flex-col space-y-2"
+                          >
+                           {ramOptions.map((option) => (
+                             <FormItem 
+                                key={option.id} 
+                                className="flex items-center space-x-3 space-y-0 rounded-md border p-4 has-[:checked]:bg-primary/10 has-[:checked]:border-primary"
+                             >
+                              <FormControl>
+                                <RadioGroupItem value={option.label} />
+                              </FormControl>
+                               <FormLabel className="font-normal cursor-pointer">{option.label}</FormLabel>
+                            </FormItem>
+                           ))}
+                          </RadioGroup>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
