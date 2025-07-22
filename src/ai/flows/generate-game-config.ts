@@ -53,6 +53,8 @@ const prompt = ai.definePrompt({
   output: {schema: GenerateGameConfigOutputSchema},
   prompt: `You are an expert game configuration file generator. You optimize game performance based on the user's selected game, device specifications, game settings preferences and desired features.
 
+Your highest priority is to generate a configuration that is 100% safe and undetectable by the game's anti-cheat system. The configuration must be 100% working and not cause any user bans.
+
 Game: {{{game}}}
 Device Specifications: {{{deviceSpecifications}}}
 Game Settings Preferences: {{{gameSettingsPreferences}}}
@@ -60,8 +62,28 @@ Desired Features: {{#each desiredFeatures}}{{{this}}}{{#unless @last}}, {{/unles
 
 Based on the information above, generate an optimized configuration file for the selected game ({{game}}). Also, provide clear and concise instructions on how to install the generated configuration file into the game's folder.
 
-Ensure the configuration is tailored to the device specifications and game settings preferences, while incorporating the desired features to enhance the user's gaming experience.
+Ensure the configuration is tailored to the device specifications and game settings preferences, while incorporating the desired features to enhance the user's gaming experience, while remaining completely safe and undetectable.
 `,
+  config: {
+    safetySettings: [
+      {
+        category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+        threshold: 'BLOCK_NONE',
+      },
+      {
+        category: 'HARM_CATEGORY_HATE_SPEECH',
+        threshold: 'BLOCK_NONE',
+      },
+      {
+        category: 'HARM_CATEGORY_HARASSMENT',
+        threshold: 'BLOCK_NONE',
+      },
+      {
+        category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+        threshold: 'BLOCK_NONE',
+      },
+    ],
+  },
 });
 
 const generateGameConfigFlow = ai.defineFlow(
