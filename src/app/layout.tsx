@@ -3,6 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
+  manifest: "/manifest.json",
   title: 'BGMI/PUBG Config Pro',
   description: 'Generate optimized BGMI/PUBG config files with AI.',
 };
