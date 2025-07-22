@@ -1,13 +1,13 @@
 import { ConfigGenerator } from '@/components/config-generator';
 import { AdBanner } from '@/components/ad-banner';
-import { Gamepad2, User } from 'lucide-react';
+import { Gamepad2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export default function Home() {
   return (
     <>
-      <header className="absolute top-0 left-0 right-0 p-4 flex justify-end">
+      <header className="absolute top-0 left-0 right-0 p-4 flex justify-end z-10">
         <div className="flex gap-2">
             <Button variant="ghost" asChild>
               <Link href="/login">Login</Link>
@@ -37,6 +37,14 @@ export default function Home() {
 
         <AdBanner />
       </main>
+      <div className="fixed bottom-6 right-6 z-50">
+        <Button asChild size="lg" className="rounded-full shadow-lg h-14 px-6">
+          <a href="/app-release.apk" download>
+            <Download className="mr-2 h-5 w-5" />
+            Download APK
+          </a>
+        </Button>
+      </div>
     </>
   );
 }
