@@ -32,12 +32,18 @@ const features = [
   { id: 'wide_view_iphone_8_plus', label: 'Wide View (iPhone 8 Plus)' },
 ] as const;
 
+const gameSettingsOptions = [
+    { id: 'high_performance', label: 'High Performance', description: 'Smooth Graphics, 90 FPS' },
+    { id: 'balanced', label: 'Balanced', description: 'HD Graphics, 60 FPS' },
+    { id: 'high_quality', label: 'High Quality', description: 'HDR Graphics, Extreme FPS' },
+]
+
 const formSchema = z.object({
   game: z.enum(['BGMI', 'PUBG'], {
     required_error: 'You need to select a game.',
   }),
   deviceSpecifications: z.string().min(10, { message: 'Please provide more details about your device.' }),
-  gameSettingsPreferences: z.string().min(10, { message: 'Please describe your preferred settings.' }),
+  gameSettingsPreferences: z.string({ required_error: 'You need to select a game setting preference.'}),
   desiredFeatures: z.array(z.string()).refine((value) => value.length > 0, {
     message: 'You have to select at least one feature.',
   }),
@@ -57,7 +63,6 @@ export function ConfigGenerator() {
     defaultValues: {
       game: 'BGMI',
       deviceSpecifications: '',
-      gameSettingsPreferences: '',
       desiredFeatures: ['Aim Assist'],
     },
   });
@@ -188,14 +193,29 @@ export function ConfigGenerator() {
                     control={form.control}
                     name="gameSettingsPreferences"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="space-y-3">
                         <FormLabel className="text-lg">Game Settings Preferences</FormLabel>
                         <FormControl>
-                          <Textarea
-                            placeholder="e.g., Smooth graphics, 90 FPS, Colorful style"
-                            className="resize-none h-32"
-                            {...field}
-                          />
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            className="flex flex-col space-y-2"
+                          >
+                           {gameSettingsOptions.map((option) => (
+                             <FormItem 
+                                key={option.id} 
+                                className="flex items-center space-x-3 space-y-0 rounded-md border p-4 has-[:checked]:bg-primary/10 has-[:checked]:border-primary"
+                             >
+                              <FormControl>
+                                <RadioGroupItem value={option.description} />
+                              </FormControl>
+                              <div>
+                                <FormLabel className="font-normal cursor-pointer">{option.label}</FormLabel>
+                                <p className="text-sm text-muted-foreground">{option.description}</p>
+                              </div>
+                            </FormItem>
+                           ))}
+                          </RadioGroup>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
