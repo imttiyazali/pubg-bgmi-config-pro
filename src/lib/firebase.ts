@@ -1,26 +1,19 @@
 
-'use server';
 // Import the functions you need from the SDKs you need
-import { initializeApp, getApps, type FirebaseOptions } from "firebase/app";
+import { initializeApp, getApps, getApp, type FirebaseOptions } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
-// Your web app's Firebase configuration
 const firebaseConfig: FirebaseOptions = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PULIC_FIREBASE_APP_ID,
+  apiKey: "AIzaSyAzOJV20yi-zBOD57WuTNTE4P003OG0Z8c",
+  authDomain: "bgmi-config-pro.firebaseapp.com",
+  projectId: "bgmi-config-pro",
+  storageBucket: "bgmi-config-pro.firebasestorage.app",
+  messagingSenderId: "318946056014",
+  appId: "1:318946056014:web:c33e9d6c8123104bdd301f",
 };
 
 // Initialize Firebase
-let app;
-if (!getApps().length) {
-  app = initializeApp(firebaseConfig);
-} else {
-  app = getApps()[0];
-}
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+const auth = getAuth(app);
 
-export const auth = getAuth(app);
-export default app;
+export { app, auth };
