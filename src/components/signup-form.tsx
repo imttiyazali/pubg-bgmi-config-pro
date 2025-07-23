@@ -5,6 +5,9 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { UserPlus } from 'lucide-react';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -26,6 +29,7 @@ type FormValues = z.infer<typeof formSchema>;
 export function SignupForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -38,13 +42,22 @@ export function SignupForm() {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setIsLoading(true);
-    // Placeholder for signup logic
-    console.log(data);
-    toast({
-      title: 'Signup Submitted',
-      description: 'This is a placeholder. Signup logic is not implemented yet.',
-    });
-    setIsLoading(false);
+    try {
+      await createUserWithEmailAndPassword(auth, data.email, data.password);
+      toast({
+        title: 'Account created successfully!',
+        description: "We've created your account for you.",
+      });
+      router.push('/');
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Signup Failed',
+        description: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

@@ -5,6 +5,9 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Lock } from 'lucide-react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,6 +25,7 @@ type FormValues = z.infer<typeof formSchema>;
 export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -33,13 +37,21 @@ export function LoginForm() {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setIsLoading(true);
-    // Placeholder for login logic
-    console.log(data);
-    toast({
-      title: 'Login Submitted',
-      description: 'This is a placeholder. Login logic is not implemented yet.',
-    });
-    setIsLoading(false);
+    try {
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+      toast({
+        title: 'Logged in successfully!',
+      });
+      router.push('/');
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Login Failed',
+        description: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
