@@ -6,14 +6,18 @@ const firebaseConfig = {
     apiKey: "AIzaSyAzOJV20yi-zBOD57WuTNTE4P003OG0Z8c",
     authDomain: "bgmi-config-pro.firebaseapp.com",
     projectId: "bgmi-config-pro",
-    storageBucket: "bgmi-config-pro.firebasestorage.app",
+    storageBucket: "bgmi-config-pro.appspot.com",
     messagingSenderId: "318946056014",
     appId: "1:318946056014:web:c33e9d6c8123104bdd301f"
 };
 
-
 // Initialize Firebase
-const app: FirebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const auth = getAuth(app);
+let app: FirebaseApp;
+if (!getApps().length) {
+  app = initializeApp(firebaseConfig);
+} else {
+  app = getApp();
+}
 
-export { app, auth, initializeApp };
+export const auth = getAuth(app);
+export default app;
