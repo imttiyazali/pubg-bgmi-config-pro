@@ -1,21 +1,22 @@
 {
-  "name": "BGMI/PUBG Config Pro",
-  "short_name": "Config Pro",
+  "name": "BGMI Config Pro",
+  "short_name": "BGMI Pro",
   "description": "Generate optimized BGMI/PUBG config files with AI.",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#333333",
-  "theme_color": "#29ABE2",
   "icons": [
     {
-      "src": "/icon-192x192.png",
+      "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/icon-512x512.png",
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "theme_color": "#333333",
+  "background_color": "#333333",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
 }
