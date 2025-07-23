@@ -1,3 +1,4 @@
+'use server';
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps, type FirebaseOptions } from "firebase/app";
 import { getAuth } from "firebase/auth";
@@ -12,10 +13,15 @@ const firebaseConfig: FirebaseOptions = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+const toSnakeCase = (str: string) => {
+  return str.replace(/[A-Z]/g, letter => `_${letter}`).toUpperCase();
+}
+
 // Validate environment variables
 for (const key in firebaseConfig) {
   if (firebaseConfig[key as keyof FirebaseOptions] === undefined) {
-    throw new Error(`Missing Firebase config key: ${key}. Please set the corresponding NEXT_PUBLIC_FIREBASE_${key.toUpperCase()} environment variable.`);
+    const envVarName = `NEXT_PUBLIC_FIREBASE_${toSnakeCase(key)}`;
+    throw new Error(`Missing Firebase config key: ${key}. Please set the corresponding ${envVarName} environment variable in your Vercel project settings.`);
   }
 }
 
